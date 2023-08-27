@@ -10,6 +10,8 @@ public class Buscar extends JFrame {
     private JTable tbHospedes;
     private DefaultTableModel modelo;
     private DefaultTableModel modeloHospedes;
+    private EditButton editButton;
+    private DeleteButton deleteButton;
 
     private JTextField txtBuscar;
 
@@ -34,33 +36,11 @@ public class Buscar extends JFrame {
         lblTitulo.setBounds(331, 62, 280, 42);
         contentPane.add(lblTitulo);
 
-        txtBuscar = new JTextField();
-        txtBuscar.setBounds(536, 127, 193, 31);
-        txtBuscar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-        contentPane.add(txtBuscar);
-        txtBuscar.setColumns(10);
+        MetodoBuscar MetodoBuscar = new MetodoBuscar();
+        MetodoBuscar.setBounds(536, 127, 260, 50);
+        contentPane.add(MetodoBuscar);
 
-        JPanel btnBuscar = new JPanel();
-
-        btnBuscar.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String searchTerm = txtBuscar.getText().trim();
-            }
-        });
-        btnBuscar.setLayout(null);
-        btnBuscar.setBackground(new Color(12, 138, 199));
-        btnBuscar.setBounds(748, 125, 122, 35);
-        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        contentPane.add(btnBuscar);
-
-        JLabel lblBuscar = new JLabel("BUSCAR");
-        lblBuscar.setBounds(0, 0, 122, 35);
-        btnBuscar.add(lblBuscar);
-        lblBuscar.setHorizontalAlignment(SwingConstants.CENTER);
-        lblBuscar.setForeground(Color.WHITE);
-        lblBuscar.setFont(new Font("Roboto", Font.PLAIN, 18));
-
+        // Table config
         JTabbedPane panel = new JTabbedPane(JTabbedPane.TOP);
         panel.setBackground(new Color(12, 138, 199));
         panel.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -78,11 +58,11 @@ public class Buscar extends JFrame {
         modelo.addColumn("Forma de Pgto");
         tbReservas.setModel(modelo);
 
-        // Fetch data for Reservas table
-        fetchDataFromDatabaseForReservas();
-
         JScrollPane scroll_table = new JScrollPane(tbReservas);
         panel.addTab("Reservas", new ImageIcon(Buscar.class.getResource("/imagenes/reservado.png")), scroll_table);
+
+// Chame o método para preencher os dados da tabela de reservas
+        fetchDataFromDatabaseForReservas();
 
         tbHospedes = new JTable();
         tbHospedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -97,38 +77,25 @@ public class Buscar extends JFrame {
         modeloHospedes.addColumn("Numero de Reserva");
         tbHospedes.setModel(modeloHospedes);
 
-        // Fetch data for Hospedes table
         fetchDataFromDatabaseForHospedes();
 
         JScrollPane scroll_tableHospedes = new JScrollPane(tbHospedes);
         panel.addTab("Hóspedes", new ImageIcon(Buscar.class.getResource("/imagenes/pessoas.png")), scroll_tableHospedes);
-        JPanel btnEditar = new JPanel();
-        btnEditar.setLayout(null);
-        btnEditar.setBackground(new Color(12, 138, 199));
-        btnEditar.setBounds(635, 508, 122, 35);
-        btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        contentPane.add(btnEditar);
 
-        JLabel lblEditar = new JLabel("EDITAR");
-        lblEditar.setHorizontalAlignment(SwingConstants.CENTER);
-        lblEditar.setForeground(Color.WHITE);
-        lblEditar.setFont(new Font("Roboto", Font.PLAIN, 18));
-        lblEditar.setBounds(0, 0, 122, 35);
-        btnEditar.add(lblEditar);
+        editButton = new EditButton("Edit", tbReservas, modelo);
+        editButton.setBounds(536, 497, 122, 35);
+        contentPane.add(editButton);
 
-        JPanel btnDeletar = new JPanel();
-        btnDeletar.setLayout(null);
-        btnDeletar.setBackground(new Color(12, 138, 199));
-        btnDeletar.setBounds(767, 508, 122, 35);
-        btnDeletar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        contentPane.add(btnDeletar);
+        deleteButton = new DeleteButton("Delete", tbReservas, modelo);
+        deleteButton.setBounds(668, 497, 122, 35);
+        contentPane.add(deleteButton);
 
+        // Button exit(X) and Back(<).
         JLabel lblExcluir = new JLabel("DELETAR");
         lblExcluir.setHorizontalAlignment(SwingConstants.CENTER);
         lblExcluir.setForeground(Color.WHITE);
         lblExcluir.setFont(new Font("Roboto", Font.PLAIN, 18));
         lblExcluir.setBounds(0, 0, 122, 35);
-        btnDeletar.add(lblExcluir);
 
         JPanel btnExit = new JPanel();
         btnExit.addMouseListener(new MouseAdapter() {
@@ -177,6 +144,7 @@ public class Buscar extends JFrame {
 
     }
 
+    // BCO DADOS CONFIG.
     private void fetchDataFromDatabaseForHospedes() {
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";

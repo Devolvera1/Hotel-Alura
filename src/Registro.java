@@ -4,7 +4,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
 import java.text.SimpleDateFormat;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import com.toedter.calendar.JDateChooser;
 
 public class Registro extends JFrame {
@@ -62,11 +63,11 @@ public class Registro extends JFrame {
         lblNome.setFont(new Font("Roboto Black", Font.PLAIN, 18));
         contentPane.add(lblNome);
 
-        txtNacionalidade = new JComboBox();
+        txtNacionalidade = new JComboBox<>();
         txtNacionalidade.setBounds(560, 350, 289, 36);
         txtNacionalidade.setBackground(SystemColor.text);
         txtNacionalidade.setFont(new Font("Roboto", Font.PLAIN, 16));
-        txtNacionalidade.setModel(new DefaultComboBoxModel(new String[] {"alemão", "andorrano", "angolano", "antiguano", "saudita", "argelino", "argentino", "armênio", "australiano", "austríaco", "azerbaijano", "bahamense", "bangladês, bangladense", "barbadiano", "bahreinita", "belga", "belizenho", "beninês", "belarusso", "boliviano", "bósnio", "botsuanês", "brasileiro", "bruneíno", "búlgaro", "burkineonse, burkinabé", "burundês", "butanês", "cabo-verdiano", "camerounês", "cambojano", "catariano", "canadense", "cazaque", "chadiano", "chileno", "chinês", "cipriota", "colombiano", "comoriano", "congolês", "congolês", "sul-coreano", "norte-coreano", "costa-marfinense, marfinense", "costa-ricense", "croata", "cubano", "dinamarquês", "djiboutiano", "dominiquense", "egípcio", "salvadorenho", "emiradense, emirático", "equatoriano", "eritreu", "eslovaco", "esloveno", "espanhol", "estadunidense, (norte-)americano", "estoniano", "etíope", "fijiano", "filipino", "finlandês", "francês", "gabonês", "gambiano", "ganês ou ganense", "georgiano", "granadino", "grego", "guatemalteco", "guianês", "guineense", "guineense, bissau-guineense", "equato-guineense", "haitiano", "hondurenho", "húngaro", "iemenita", "cookiano", "marshallês", "salomonense", "indiano", "indonésio", "iraniano", "iraquiano", "irlandês", "islandês", "34", "jamaicano", "japonês", "jordaniano", "kiribatiano", "kuwaitiano", "laosiano", "lesotiano", "letão", "libanês", "liberiano", "líbio", "liechtensteiniano", "lituano", "luxemburguês", "macedônio", "madagascarense", "malásio37", "malawiano", "maldivo", "maliano", "maltês", "marroquino", "mauriciano", "mauritano", "mexicano", "myanmarense", "micronésio", "moçambicano", "moldovo", "monegasco", "mongol", "montenegrino", "namibiano", "nauruano", "nepalês", "nicaraguense", "nigerino", "nigeriano", "niuiano", "norueguês", "neozelandês", "omani", "neerlandês", "palauano", "palestino", "panamenho", "papua, papuásio", "paquistanês", "paraguaio", "peruano", "polonês, polaco", "português", "queniano", "quirguiz", "britânico", "centro-africano", "tcheco", "dominicano", "romeno", "ruandês", "russo", "samoano", "santa-lucense", "são-cristovense", "samarinês", "santomense", "são-vicentino", "seichelense", "senegalês", "sérvio", "singapurense", "sírio", "somaliano, somali", "sri-lankês", "suázi", "sudanês", "sul-sudanês", "sueco", "suíço", "surinamês", "tajique", "tailandês", "tanzaniano", "timorense", "togolês", "tonganês", "trinitário", "tunisiano", "turcomeno", "turco", "tuvaluano", "ucraniano", "ugandês", "uruguaio", "uzbeque", "vanuatuense", "vaticano", "venezuelano", "vietnamita", "zambiano", "zimbabueano"}));
+        txtNacionalidade.setModel(new DefaultComboBoxModel<>(new String[] {"alemão", "andorrano", "angolano", "antiguano", "saudita", "argelino", "argentino", "armênio", "australiano", "austríaco", "azerbaijano", "bahamense", "bangladês, bangladense", "barbadiano", "bahreinita", "belga", "belizenho", "beninês", "belarusso", "boliviano", "bósnio", "botsuanês", "brasileiro", "bruneíno", "búlgaro", "burkineonse, burkinabé", "burundês", "butanês", "cabo-verdiano", "camerounês", "cambojano", "catariano", "canadense", "cazaque", "chadiano", "chileno", "chinês", "cipriota", "colombiano", "comoriano", "congolês", "congolês", "sul-coreano", "norte-coreano", "costa-marfinense, marfinense", "costa-ricense", "croata", "cubano", "dinamarquês", "djiboutiano", "dominiquense", "egípcio", "salvadorenho", "emiradense, emirático", "equatoriano", "eritreu", "eslovaco", "esloveno", "espanhol", "estadunidense, (norte-)americano", "estoniano", "etíope", "fijiano", "filipino", "finlandês", "francês", "gabonês", "gambiano", "ganês ou ganense", "georgiano", "granadino", "grego", "guatemalteco", "guianês", "guineense", "guineense, bissau-guineense", "equato-guineense", "haitiano", "hondurenho", "húngaro", "iemenita", "cookiano", "marshallês", "salomonense", "indiano", "indonésio", "iraniano", "iraquiano", "irlandês", "islandês", "34", "jamaicano", "japonês", "jordaniano", "kiribatiano", "kuwaitiano", "laosiano", "lesotiano", "letão", "libanês", "liberiano", "líbio", "liechtensteiniano", "lituano", "luxemburguês", "macedônio", "madagascarense", "malásio37", "malawiano", "maldivo", "maliano", "maltês", "marroquino", "mauriciano", "mauritano", "mexicano", "myanmarense", "micronésio", "moçambicano", "moldovo", "monegasco", "mongol", "montenegrino", "namibiano", "nauruano", "nepalês", "nicaraguense", "nigerino", "nigeriano", "niuiano", "norueguês", "neozelandês", "omani", "neerlandês", "palauano", "palestino", "panamenho", "papua, papuásio", "paquistanês", "paraguaio", "peruano", "polonês, polaco", "português", "queniano", "quirguiz", "britânico", "centro-africano", "tcheco", "dominicano", "romeno", "ruandês", "russo", "samoano", "santa-lucense", "são-cristovense", "samarinês", "santomense", "são-vicentino", "seichelense", "senegalês", "sérvio", "singapurense", "sírio", "somaliano, somali", "sri-lankês", "suázi", "sudanês", "sul-sudanês", "sueco", "suíço", "surinamês", "tajique", "tailandês", "tanzaniano", "timorense", "togolês", "tonganês", "trinitário", "tunisiano", "turcomeno", "turco", "tuvaluano", "ucraniano", "ugandês", "uruguaio", "uzbeque", "vanuatuense", "vaticano", "venezuelano", "vietnamita", "zambiano", "zimbabueano"}));
         contentPane.add(txtNacionalidade);
 
         txtNome = new JTextField();
@@ -144,7 +145,7 @@ public class Registro extends JFrame {
         btnSave.setBounds(560, 550, 100, 35);
         btnSave.setFont(new Font("Roboto", Font.PLAIN, 16));
         btnSave.setBackground(Color.WHITE);
-        btnSave.addActionListener(e -> saveButtonClicked());
+        btnSave.addActionListener(e -> handleButtonCommand("Save"));  // Corrected line
         contentPane.add(btnSave);
 
         JButton btnExit = createIconButton("Exit", "X", 871, 0);
@@ -164,7 +165,12 @@ public class Registro extends JFrame {
         button.setBackground(new Color(12, 138, 199));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Roboto", Font.PLAIN, 18));
-        button.addActionListener(e -> handleButtonCommand(command));
+        if (command.equals("Save")) {
+            button.addActionListener(e -> saveButtonClicked());
+        } else {
+            button.addActionListener(e -> handleButtonCommand(command));
+        }
+
         return button;
     }
     private boolean areAllFieldsFilled() {
@@ -206,28 +212,23 @@ public class Registro extends JFrame {
 
     private void saveToDatabase() {
         try {
-            // Load the MySQL JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // Establish the database connection
             String url = "jdbc:mysql://localhost:3306/db_one";
             String username = "root";
             String password = "Cross-fire1";
             Connection connection = DriverManager.getConnection(url, username, password);
-
-            // Prepare and execute the INSERT statement
             String sql = "INSERT INTO hospedes (nome, sobrenome, data_nascimento, nacionalidade, telefone, numero_reserva) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, txtNome.getText());
             preparedStatement.setString(2, txtSobrenome.getText());
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  // Correção no formato da data
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String formattedDate = dateFormat.format(txtDataN.getDate());
             preparedStatement.setString(3, formattedDate);
 
             preparedStatement.setString(4, txtNacionalidade.getSelectedItem().toString());
             preparedStatement.setString(5, txtTelefone.getText());
-            preparedStatement.setInt(6, Integer.parseInt(txtNreserva.getText()));  // Convertendo para int
+            preparedStatement.setInt(6, Integer.parseInt(txtNreserva.getText()));
 
             preparedStatement.executeUpdate();
 
@@ -235,13 +236,12 @@ public class Registro extends JFrame {
             preparedStatement.close();
             connection.close();
         } catch (ClassNotFoundException | SQLException ex) {
-            ex.printStackTrace();
-            // Handle the exception appropriately
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.log(Level.SEVERE, "An error occurred", ex);
         }
     }
 
-
-    public static void main(String[] args) {
+        public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Registro frame = new Registro();
             frame.setVisible(true);
