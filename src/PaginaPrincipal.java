@@ -98,10 +98,10 @@ public class PaginaPrincipal extends JFrame {
         contentPane.add(newPanel);
 
         closeButton = new JButton();
-        closeButton.setBounds(600, 530, 50, 50); // Reduzindo o tamanho para acomodar o ícone
-        closeButton.setIcon(new ImageIcon("src/imagenes/exit.png")); // Substitua pelo caminho correto do ícone
+        closeButton.setBounds(600, 530, 50, 50);
+        closeButton.setIcon(new ImageIcon("src/imagenes/exit.png"));
         closeButton.setBorderPainted(false);
-        closeButton.setContentAreaFilled(false); // Remove a área de preenchimento
+        closeButton.setContentAreaFilled(false);
         closeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         newPanel.add(closeButton);
