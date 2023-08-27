@@ -16,7 +16,17 @@ public class Registro extends JFrame {
 
     public Registro() {
         initializeUI();
+        addBackgroundImage();
     }
+
+    private void addBackgroundImage() {
+        ImageIcon backgroundImageIcon = new ImageIcon(IMAGE_PATH);
+        JLabel backgroundImageLabel = new JLabel(backgroundImageIcon);
+        backgroundImageLabel.setBounds(0, 0, 484, 527);
+        contentPane.add(backgroundImageLabel);
+
+    }
+
 
     private void initializeUI() {
         setResizable(false);

@@ -92,14 +92,21 @@ public class PaginaPrincipal extends JFrame {
 
     private void addNewPanel() {
         JPanel newPanel = new JPanel();
-        newPanel.setBounds(250, 0, 694, 609); // Ajuste as coordenadas para posicionar no lado direito
+        newPanel.setBounds(250, 0, 694, 609);
         newPanel.setBackground(Color.white);
         newPanel.setLayout(null);
         contentPane.add(newPanel);
 
-        closeButton = new JButton("Fechar");
-        closeButton.setBounds(600, 550, 80, 30);
+        closeButton = new JButton();
+        closeButton.setBounds(600, 530, 50, 50); // Reduzindo o tamanho para acomodar o ícone
+        closeButton.setIcon(new ImageIcon("src/imagenes/exit.png")); // Substitua pelo caminho correto do ícone
+        closeButton.setBorderPainted(false);
+        closeButton.setContentAreaFilled(false); // Remove a área de preenchimento
+        closeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
         newPanel.add(closeButton);
+
+
 
 
         closeButton.addActionListener(e -> {
