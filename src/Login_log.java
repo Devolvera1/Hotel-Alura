@@ -22,12 +22,11 @@ public class Login_log extends JFrame {
         addBackgroundImage();
         addSidePanel();
 
-        // Adicione o KeyListener para o campo de senha aqui
         txtSenha.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    login(); // Chama a função de login quando a tecla Enter é pressionada
+                    login();
                 }
             }
         });
@@ -69,28 +68,24 @@ public class Login_log extends JFrame {
         txtSenha.setBounds(40, 300, 220, 30);
         panel_1.add(txtSenha);
 
-        // Create and add a login button
         JButton btnLogin = new JButton("Login");
         btnLogin.setBounds(40, 350, 100, 30);
         panel_1.add(btnLogin);
-
-        // Adicione o ActionListener para o botão de login aqui
         btnLogin.addActionListener(e -> {
             login();
         });
 
         JButton btncancelar = new JButton("Cancelar");
-        btncancelar.setBounds(160, 350, 100, 30); // Adjust the position and size as needed
+        btncancelar.setBounds(160, 350, 100, 30);
         panel_1.add(btncancelar);
 
-        // Adicione o ActionListener para o botão de cancelar aqui
         btncancelar.addActionListener(e -> {
             cancel();
         });
     }
 
     private void cancel() {
-        System.exit(0); // Exit the application
+        System.exit(0);
     }
 
     private void login() {
