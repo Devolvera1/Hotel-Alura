@@ -3,6 +3,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.*;
 
 public class Buscar extends JFrame {
     private JTable tbReservas;
@@ -44,7 +45,7 @@ public class Buscar extends JFrame {
         btnBuscar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                String searchTerm = txtBuscar.getText().trim();
             }
         });
         btnBuscar.setLayout(null);
@@ -76,6 +77,10 @@ public class Buscar extends JFrame {
         modelo.addColumn("Valor");
         modelo.addColumn("Forma de Pgto");
         tbReservas.setModel(modelo);
+
+        // Fetch data for Reservas table
+        fetchDataFromDatabaseForReservas();
+
         JScrollPane scroll_table = new JScrollPane(tbReservas);
         panel.addTab("Reservas", new ImageIcon(Buscar.class.getResource("/imagenes/reservado.png")), scroll_table);
 
@@ -91,9 +96,12 @@ public class Buscar extends JFrame {
         modeloHospedes.addColumn("Telefone");
         modeloHospedes.addColumn("Numero de Reserva");
         tbHospedes.setModel(modeloHospedes);
+
+        // Fetch data for Hospedes table
+        fetchDataFromDatabaseForHospedes();
+
         JScrollPane scroll_tableHospedes = new JScrollPane(tbHospedes);
         panel.addTab("Hóspedes", new ImageIcon(Buscar.class.getResource("/imagenes/pessoas.png")), scroll_tableHospedes);
-
         JPanel btnEditar = new JPanel();
         btnEditar.setLayout(null);
         btnEditar.setBackground(new Color(12, 138, 199));
@@ -167,6 +175,66 @@ public class Buscar extends JFrame {
         labelVoltar.setBounds(0, 0, 39, 35);
         btnVoltar.add(labelVoltar);
 
+    }
+
+    private void fetchDataFromDatabaseForHospedes() {
+        String url = "jdbc:mysql://localhost:3306/db_one";
+        String username = "root";
+        String password = "Cross-fire1";
+
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            String query = "SELECT * FROM db_one.hospedes";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            modeloHospedes.setRowCount(0);
+
+            while (resultSet.next()) {
+                Object[] rowData = new Object[7];  // Adjust the number of columns as needed
+                for (int i = 1; i <= 7; i++) {
+                    rowData[i - 1] = resultSet.getObject(i);
+                }
+                modeloHospedes.addRow(rowData);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void fetchDataFromDatabaseForReservas() {
+        String url = "jdbc:mysql://localhost:3306/db_one";
+        String username = "root";
+        String password = "Cross-fire1";
+
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            String query = "SELECT * FROM db_one.reservas";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            modelo.setRowCount(0);
+
+            while (resultSet.next()) {
+                Object[] rowData = new Object[5];  // Adjust the number of columns as needed
+                for (int i = 1; i <= 5; i++) {
+                    rowData[i - 1] = resultSet.getObject(i);
+                }
+                modelo.addRow(rowData);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

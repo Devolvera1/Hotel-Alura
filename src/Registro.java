@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+
 import com.toedter.calendar.JDateChooser;
 
 public class Registro extends JFrame {
@@ -24,11 +27,24 @@ public class Registro extends JFrame {
         JLabel backgroundImageLabel = new JLabel(backgroundImageIcon);
         backgroundImageLabel.setBounds(0, 0, 484, 527);
         contentPane.add(backgroundImageLabel);
-
     }
 
-
     private void initializeUI() {
+        setLookAndFeel();
+        setWindowProperties();
+        createFieldsAndLabels();
+        createButtons();
+    }
+
+    private void setLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setWindowProperties() {
         setResizable(false);
         setUndecorated(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -37,28 +53,14 @@ public class Registro extends JFrame {
         contentPane = new JPanel();
         contentPane.setLayout(null);
         setContentPane(contentPane);
+    }
 
-        txtNome = new JTextField();
-        txtNome.setFont(new Font("Roboto", Font.PLAIN, 16));
-        txtNome.setBounds(560, 135, 285, 33);
-        txtNome.setBackground(Color.WHITE);
-        txtNome.setColumns(10);
-        txtNome.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-        contentPane.add(txtNome);
-
-        txtSobrenome = new JTextField();
-        txtSobrenome.setFont(new Font("Roboto", Font.PLAIN, 16));
-        txtSobrenome.setBounds(560, 204, 285, 33);
-        txtSobrenome.setColumns(10);
-        txtSobrenome.setBackground(Color.WHITE);
-        txtSobrenome.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-        contentPane.add(txtSobrenome);
-
-        txtDataN = new JDateChooser();
-        txtDataN.setBounds(560, 278, 285, 36);
-        txtDataN.getCalendarButton().setBackground(SystemColor.textHighlight);
-        txtDataN.setDateFormatString("yyyy-MM-dd");
-        contentPane.add(txtDataN);
+    private void createFieldsAndLabels() {
+        JLabel lblNome = new JLabel("NOME");
+        lblNome.setBounds(560, 119, 253, 14);
+        lblNome.setForeground(SystemColor.textInactiveText);
+        lblNome.setFont(new Font("Roboto Black", Font.PLAIN, 18));
+        contentPane.add(lblNome);
 
         txtNacionalidade = new JComboBox();
         txtNacionalidade.setBounds(560, 350, 289, 36);
@@ -67,11 +69,9 @@ public class Registro extends JFrame {
         txtNacionalidade.setModel(new DefaultComboBoxModel(new String[] {"alemão", "andorrano", "angolano", "antiguano", "saudita", "argelino", "argentino", "armênio", "australiano", "austríaco", "azerbaijano", "bahamense", "bangladês, bangladense", "barbadiano", "bahreinita", "belga", "belizenho", "beninês", "belarusso", "boliviano", "bósnio", "botsuanês", "brasileiro", "bruneíno", "búlgaro", "burkineonse, burkinabé", "burundês", "butanês", "cabo-verdiano", "camerounês", "cambojano", "catariano", "canadense", "cazaque", "chadiano", "chileno", "chinês", "cipriota", "colombiano", "comoriano", "congolês", "congolês", "sul-coreano", "norte-coreano", "costa-marfinense, marfinense", "costa-ricense", "croata", "cubano", "dinamarquês", "djiboutiano", "dominiquense", "egípcio", "salvadorenho", "emiradense, emirático", "equatoriano", "eritreu", "eslovaco", "esloveno", "espanhol", "estadunidense, (norte-)americano", "estoniano", "etíope", "fijiano", "filipino", "finlandês", "francês", "gabonês", "gambiano", "ganês ou ganense", "georgiano", "granadino", "grego", "guatemalteco", "guianês", "guineense", "guineense, bissau-guineense", "equato-guineense", "haitiano", "hondurenho", "húngaro", "iemenita", "cookiano", "marshallês", "salomonense", "indiano", "indonésio", "iraniano", "iraquiano", "irlandês", "islandês", "34", "jamaicano", "japonês", "jordaniano", "kiribatiano", "kuwaitiano", "laosiano", "lesotiano", "letão", "libanês", "liberiano", "líbio", "liechtensteiniano", "lituano", "luxemburguês", "macedônio", "madagascarense", "malásio37", "malawiano", "maldivo", "maliano", "maltês", "marroquino", "mauriciano", "mauritano", "mexicano", "myanmarense", "micronésio", "moçambicano", "moldovo", "monegasco", "mongol", "montenegrino", "namibiano", "nauruano", "nepalês", "nicaraguense", "nigerino", "nigeriano", "niuiano", "norueguês", "neozelandês", "omani", "neerlandês", "palauano", "palestino", "panamenho", "papua, papuásio", "paquistanês", "paraguaio", "peruano", "polonês, polaco", "português", "queniano", "quirguiz", "britânico", "centro-africano", "tcheco", "dominicano", "romeno", "ruandês", "russo", "samoano", "santa-lucense", "são-cristovense", "samarinês", "santomense", "são-vicentino", "seichelense", "senegalês", "sérvio", "singapurense", "sírio", "somaliano, somali", "sri-lankês", "suázi", "sudanês", "sul-sudanês", "sueco", "suíço", "surinamês", "tajique", "tailandês", "tanzaniano", "timorense", "togolês", "tonganês", "trinitário", "tunisiano", "turcomeno", "turco", "tuvaluano", "ucraniano", "ugandês", "uruguaio", "uzbeque", "vanuatuense", "vaticano", "venezuelano", "vietnamita", "zambiano", "zimbabueano"}));
         contentPane.add(txtNacionalidade);
 
-        JLabel lblNome = new JLabel("NOME");
-        lblNome.setBounds(562, 119, 253, 14);
-        lblNome.setForeground(SystemColor.textInactiveText);
-        lblNome.setFont(new Font("Roboto Black", Font.PLAIN, 18));
-        contentPane.add(lblNome);
+        txtNome = new JTextField();
+        txtNome.setBounds(560, 143, 253, 25);
+        contentPane.add(txtNome);
 
         JLabel lblSobrenome = new JLabel("SOBRENOME");
         lblSobrenome.setBounds(560, 189, 255, 14);
@@ -79,11 +79,19 @@ public class Registro extends JFrame {
         lblSobrenome.setFont(new Font("Roboto Black", Font.PLAIN, 18));
         contentPane.add(lblSobrenome);
 
+        txtSobrenome = new JTextField();
+        txtSobrenome.setBounds(560, 213, 253, 25);
+        contentPane.add(txtSobrenome);
+
         JLabel lblDataN = new JLabel("DATA DE NASCIMENTO");
         lblDataN.setBounds(560, 256, 255, 14);
         lblDataN.setForeground(SystemColor.textInactiveText);
         lblDataN.setFont(new Font("Roboto Black", Font.PLAIN, 18));
         contentPane.add(lblDataN);
+
+        txtDataN = new JDateChooser();
+        txtDataN.setBounds(560, 280, 253, 25);
+        contentPane.add(txtDataN);
 
         JLabel lblNacionalidade = new JLabel("NACIONALIDADE");
         lblNacionalidade.setBounds(560, 326, 255, 14);
@@ -91,111 +99,148 @@ public class Registro extends JFrame {
         lblNacionalidade.setFont(new Font("Roboto Black", Font.PLAIN, 18));
         contentPane.add(lblNacionalidade);
 
+        txtNacionalidade = new JComboBox<>();
+        txtNacionalidade.setBounds(560, 350, 253, 25);
+        contentPane.add(txtNacionalidade);
+
         JLabel lblTelefone = new JLabel("TELEFONE");
-        lblTelefone.setBounds(562, 406, 253, 14);
+        lblTelefone.setBounds(560, 406, 253, 14);
         lblTelefone.setForeground(SystemColor.textInactiveText);
         lblTelefone.setFont(new Font("Roboto Black", Font.PLAIN, 18));
         contentPane.add(lblTelefone);
 
         txtTelefone = new JTextField();
-        txtTelefone.setFont(new Font("Roboto", Font.PLAIN, 16));
-        txtTelefone.setBounds(560, 424, 285, 33);
-        txtTelefone.setColumns(10);
-        txtTelefone.setBackground(Color.WHITE);
-        txtTelefone.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        txtTelefone.setBounds(560, 430, 253, 25);
         contentPane.add(txtTelefone);
 
-        JLabel lblTitulo = new JLabel("REGISTRO HÓSPEDE");
-        lblTitulo.setBounds(590, 55, 250, 42);
-        lblTitulo.setForeground(new Color(12, 138, 199));
-        lblTitulo.setFont(new Font("Roboto Black", Font.PLAIN, 23));
-        contentPane.add(lblTitulo);
-
         JLabel lblNumeroReserva = new JLabel("NÚMERO DE RESERVA");
-        lblNumeroReserva.setBounds(560, 474, 253, 14);
+        lblNumeroReserva.setBounds(560, 476, 253, 14);
         lblNumeroReserva.setForeground(SystemColor.textInactiveText);
         lblNumeroReserva.setFont(new Font("Roboto Black", Font.PLAIN, 18));
         contentPane.add(lblNumeroReserva);
 
         txtNreserva = new JTextField();
-        txtNreserva.setFont(new Font("Roboto", Font.PLAIN, 16));
-        txtNreserva.setBounds(560, 495, 285, 33);
-        txtNreserva.setColumns(10);
-        txtNreserva.setBackground(Color.WHITE);
-        txtNreserva.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        txtNreserva.setBounds(560, 500, 253, 25);
         contentPane.add(txtNreserva);
 
-        JPanel btnsalvar = new JPanel();
-        btnsalvar.setBounds(723, 560, 122, 35);
-        btnsalvar.addMouseListener(new MouseAdapter() {
+
+        // Add all the labels and text fields to the contentPane
+        contentPane.add(lblNome);
+        contentPane.add(txtNome);
+        contentPane.add(lblSobrenome);
+        contentPane.add(txtSobrenome);
+        contentPane.add(lblDataN);
+        contentPane.add(txtDataN);
+        contentPane.add(lblNacionalidade);
+        contentPane.add(txtNacionalidade);
+        contentPane.add(lblTelefone);
+        contentPane.add(txtTelefone);
+        contentPane.add(lblNumeroReserva);
+        contentPane.add(txtNreserva);
+    }
+
+    private void createButtons() {
+        JButton btnSave = new JButton("Salvar");
+        btnSave.setBounds(560, 550, 100, 35);
+        btnSave.setFont(new Font("Roboto", Font.PLAIN, 16));
+        btnSave.setBackground(Color.WHITE);
+        btnSave.addActionListener(e -> saveButtonClicked());
+        contentPane.add(btnSave);
+
+        JButton btnExit = createIconButton("Exit", "X", 871, 0);
+        btnExit.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                System.exit(0);
             }
         });
-        btnsalvar.setLayout(null);
-        btnsalvar.setBackground(new Color(12, 138, 199));
-        contentPane.add(btnsalvar);
-        btnsalvar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        JLabel labelSalvar = new JLabel("SALVAR");
-        labelSalvar.setHorizontalAlignment(SwingConstants.CENTER);
-        labelSalvar.setForeground(Color.WHITE);
-        labelSalvar.setFont(new Font("Roboto", Font.PLAIN, 18));
-        labelSalvar.setBounds(0, 0, 122, 35);
-        btnsalvar.add(labelSalvar);
-
-
-
-
-
-
-
-    JPanel btnExit = new JPanel();
-        btnExit.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            PaginaPrincipal usuario = new PaginaPrincipal();
-            usuario.setVisible(true);
-            dispose();
-        }
-    });
-
-        btnExit.setLayout(null);
-        btnExit.setBackground(new Color(12, 138, 199));
-        btnExit.setBounds(832, 0, 39, 35);
-        btnExit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         contentPane.add(btnExit);
+    }
 
-    JLabel labelExit = new JLabel("<");
-        labelExit.setHorizontalAlignment(SwingConstants.CENTER);
-        labelExit.setForeground(Color.WHITE);
-        labelExit.setFont(new Font("Roboto", Font.PLAIN, 18));
-        labelExit.setBounds(0, 0, 39, 35);
-        btnExit.add(labelExit);
-
-    JPanel btnVoltar = new JPanel();
-        btnVoltar.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
+    private JButton createIconButton(String command, String text, int x, int y) {
+        JButton button = new JButton(text);
+        button.setBounds(x, y, 39, 35);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setBackground(new Color(12, 138, 199));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Roboto", Font.PLAIN, 18));
+        button.addActionListener(e -> handleButtonCommand(command));
+        return button;
+    }
+    private boolean areAllFieldsFilled() {
+        return !txtNome.getText().isEmpty() &&
+                !txtSobrenome.getText().isEmpty() &&
+                txtDataN.getDate() != null &&
+                !txtTelefone.getText().isEmpty();
+    }
+    private void handleButtonCommand(String command) {
+        if (command.equals("Exit")) {
             System.exit(0);
-            dispose();
+        } else if (command.equals("Save")) {
+            if (areAllFieldsFilled()) {
+                int result = JOptionPane.showConfirmDialog(
+                        contentPane,
+                        "Deseja realmente salvar o registro?",
+                        "Confirmar",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (result == JOptionPane.YES_OPTION) {
+                    saveToDatabase();
+                    // Show success message and navigate back to PaginaPrincipal.java
+                    // ...
+                }
+            } else {
+                JOptionPane.showMessageDialog(
+                        contentPane,
+                        "Preencha todos os campos antes de salvar.",
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
         }
-    });
+    }
 
-        btnVoltar.setLayout(null);
-        btnVoltar.setBackground(new Color(12, 138, 199));
-        btnVoltar.setBounds(871, 0, 39, 35);
-        btnVoltar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        contentPane.add(btnVoltar);
+    private void saveButtonClicked() {
+        handleButtonCommand("Save");
+    }
 
-    JLabel labelVoltar = new JLabel("X");
-        labelVoltar.setHorizontalAlignment(SwingConstants.CENTER);
-        labelVoltar.setForeground(Color.WHITE);
-        labelVoltar.setFont(new Font("Roboto", Font.PLAIN, 18));
-        labelVoltar.setBounds(0, 0, 39, 35);
-        btnVoltar.add(labelVoltar);
+    private void saveToDatabase() {
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
-}
+            // Establish the database connection
+            String url = "jdbc:mysql://localhost:3306/db_one";
+            String username = "root";
+            String password = "Cross-fire1";
+            Connection connection = DriverManager.getConnection(url, username, password);
+
+            // Prepare and execute the INSERT statement
+            String sql = "INSERT INTO hospedes (nome, sobrenome, data_nascimento, nacionalidade, telefone, numero_reserva) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, txtNome.getText());
+            preparedStatement.setString(2, txtSobrenome.getText());
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  // Correção no formato da data
+            String formattedDate = dateFormat.format(txtDataN.getDate());
+            preparedStatement.setString(3, formattedDate);
+
+            preparedStatement.setString(4, txtNacionalidade.getSelectedItem().toString());
+            preparedStatement.setString(5, txtTelefone.getText());
+            preparedStatement.setInt(6, Integer.parseInt(txtNreserva.getText()));  // Convertendo para int
+
+            preparedStatement.executeUpdate();
+
+            // Close the resources
+            preparedStatement.close();
+            connection.close();
+        } catch (ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace();
+            // Handle the exception appropriately
+        }
+    }
+
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Registro frame = new Registro();
