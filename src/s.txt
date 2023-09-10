@@ -12,3 +12,19 @@ sobrenome
 datanacimento
 telefone
 idreserva (interligado com o id da tbreservas)
+
+use db_one;
+
+-- Inserting data into the reservas table
+INSERT INTO reservas (DATA_ENTRADA, DATA_SAIDA, VALOR, FORMA_PAGAMENTO)
+VALUES
+    ('2023-09-01', '2023-09-07', 500.00, 'Credit Card'),
+    ('2023-09-05', '2023-09-10', 750.00, 'Cash'),
+    ('2023-09-10', '2023-09-15', 620.00, 'PayPal');
+
+-- Inserting data into the hospedes table
+INSERT INTO hospedes (NOME, SOBRENOME, DATA_NASCIMENTO, NACIONALIDADE, TELEFONE, ID_RESERVA)
+VALUES
+    ('John', 'Doe', '1990-05-15', 'USA', '123-456-7890', 1),
+    ('Jane', 'Smith', '1985-12-03', 'Canada', '987-654-3210', 2),
+    ('Michael', 'Johnson', '1998-08-22', 'UK', '555-123-4567', 3);

@@ -75,11 +75,11 @@ public class EditReservationDialog extends JDialog {
 
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";
-        String password = "root";
+        String password = "Cross-fire1";
 
         String updateQuery = "UPDATE db_one.reservas " +
-                "SET data_check_in = ?, data_check_out = ?, valor = ?, forma_pgto = ? " +
-                "WHERE numero_reserva = ?";
+                "SET DATA_ENTRADA = ?, DATA_SAIDA = ?, valor = ?, FORMA_PAGAMENTO = ? " +
+                "WHERE ID = ?";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
@@ -115,11 +115,11 @@ class EditButton extends JPanel {
         this.model = model;
 
         setLayout(new FlowLayout(FlowLayout.CENTER));
-        setBackground(new Color(12, 138, 199));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         JButton editButton = new JButton(label);
         editButton.addActionListener(e -> performEdit());
+        editButton.setLayout(null);
 
         add(editButton);
     }
@@ -153,7 +153,6 @@ class DeleteButton extends JPanel {
         this.model = model;
 
         setLayout(new FlowLayout(FlowLayout.CENTER));
-        setBackground(new Color(12, 138, 199));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         JButton deleteButton = new JButton(label);
@@ -165,13 +164,14 @@ class DeleteButton extends JPanel {
     private void performDelete() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow >= 0) {
-            int confirmDelete = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this record?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+            int confirmDelete = JOptionPane.showConfirmDialog(null, "Você tem certeza que deseja deletar?", "Confirmação", JOptionPane.YES_NO_OPTION);
             if (confirmDelete == JOptionPane.YES_OPTION) {
                 deleteRecord(selectedRow);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Select a record to delete.");
+            JOptionPane.showMessageDialog(this, "Selecione uma linha para deletas");
         }
+
     }
 
     private String getModelValue(int row, int col) {
@@ -179,12 +179,12 @@ class DeleteButton extends JPanel {
     }
 
     private void deleteRecord(int row) {
-        String numeroReserva = getModelValue(row, 0); // Assuming the first column contains the reservation number
+        String numeroReserva = getModelValue(row, 0);
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";
-        String password = "root";
+        String password = "Cross-fire1";
 
-        String deleteQuery = "DELETE FROM db_one.reservas WHERE numero_reserva = ?";
+        String deleteQuery = "DELETE FROM db_one.reservas WHERE ID = ?";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
@@ -194,7 +194,7 @@ class DeleteButton extends JPanel {
 
             if (rowsAffected > 0) {
                 JOptionPane.showMessageDialog(this, "Record deleted successfully.");
-                model.removeRow(row); // Remove the row from the table
+                model.removeRow(row);
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to delete record.", "Error", JOptionPane.ERROR_MESSAGE);
             }

@@ -1,48 +1,104 @@
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 public class Registro extends JFrame {
     private JPanel contentPane;
-    private static final String IMAGE_PATH = "src/imagenes/registro.png";
-    private JTextField txtNome;
-    private JTextField txtSobrenome;
-    private JTextField txtTelefone;
-    private JTextField txtNreserva;
-    private JDateChooser txtDataN;
-    private JComboBox<String> txtNacionalidade;
+    private static final String IMAGE_PATH = "src/imagenes/reservas-img-3.png";
+    private JTextField txtValor;
+    private JDateChooser txtCheck_IN;
+    private JDateChooser txtCheck_out;
+    private JComboBox<String> txtFormaPagamento;
 
     public Registro() {
         initializeUI();
         addBackgroundImage();
-    }
-
-    private void addBackgroundImage() {
-        ImageIcon backgroundImageIcon = new ImageIcon(IMAGE_PATH);
-        JLabel backgroundImageLabel = new JLabel(backgroundImageIcon);
-        backgroundImageLabel.setBounds(0, 0, 484, 527);
-        contentPane.add(backgroundImageLabel);
-    }
-
-    private void initializeUI() {
-        setLookAndFeel();
-        setWindowProperties();
         createFieldsAndLabels();
         createButtons();
     }
 
-    private void setLookAndFeel() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+    private void addBackgroundImage() {
+        ImageIcon backgroundImageIcon = new ImageIcon(IMAGE_PATH);
+        JLabel backgroundImageLabel = new JLabel(backgroundImageIcon);
+        backgroundImageLabel.setBounds(0, 0, 1200, 634);
+        contentPane.add(backgroundImageLabel);
+
+        JLabel labelTitulo = new JLabel("SISTEMA DE RESERVAS");
+        labelTitulo.setForeground(SystemColor.textHighlight);
+        labelTitulo.setBounds(80, 150, 285, 14);
+        Font fonte = labelTitulo.getFont();
+        labelTitulo.setFont(new Font(fonte.getName(), Font.PLAIN, 18));
+        contentPane.add(labelTitulo);
+
+        ImageIcon icon = new ImageIcon("src/imagenes/Ha-100px.png");
+        JLabel label = new JLabel(icon);
+        label.setBounds(10, 10, 150, 100);
+        contentPane.add(label);
+
+        // Button exit(X) and Back(<).
+        JLabel lblExcluir = new JLabel("DELETAR");
+        lblExcluir.setHorizontalAlignment(SwingConstants.CENTER);
+        lblExcluir.setForeground(Color.WHITE);
+        lblExcluir.setFont(new Font("Roboto", Font.PLAIN, 18));
+        lblExcluir.setBounds(0, 0, 122, 35);
+
+        JPanel btnExit = new JPanel();
+        btnExit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                PaginaPrincipal usuario = new PaginaPrincipal();
+                usuario.setVisible(true);
+                dispose();
+            }
+        });
+
+        btnExit.setLayout(null);
+        btnExit.setBackground(new Color(12, 138, 199));
+        btnExit.setBounds(832, 0, 39, 35);
+        btnExit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        contentPane.add(btnExit);
+
+        JLabel labelExit = new JLabel("<");
+        labelExit.setHorizontalAlignment(SwingConstants.CENTER);
+        labelExit.setForeground(Color.WHITE);
+        labelExit.setFont(new Font("Roboto", Font.PLAIN, 18));
+        labelExit.setBounds(0, 0, 39, 35);
+        btnExit.add(labelExit);
+
+        JPanel btnVoltar = new JPanel();
+        btnVoltar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.exit(0);
+                dispose();
+            }
+        });
+
+        btnVoltar.setLayout(null);
+        btnVoltar.setBackground(new Color(12, 138, 199));
+        btnVoltar.setBounds(871, 0, 39, 35);
+        btnVoltar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        contentPane.add(btnVoltar);
+
+        JLabel labelVoltar = new JLabel("X");
+        labelVoltar.setHorizontalAlignment(SwingConstants.CENTER);
+        labelVoltar.setForeground(Color.WHITE);
+        labelVoltar.setFont(new Font("Roboto", Font.PLAIN, 18));
+        labelVoltar.setBounds(0, 0, 39, 35);
+        btnVoltar.add(labelVoltar);
+
+    }
+
+    private void initializeUI() {
+        setWindowProperties();
     }
 
     private void setWindowProperties() {
@@ -57,194 +113,115 @@ public class Registro extends JFrame {
     }
 
     private void createFieldsAndLabels() {
-        JLabel lblNome = new JLabel("NOME");
-        lblNome.setBounds(560, 119, 253, 14);
-        lblNome.setForeground(SystemColor.textInactiveText);
-        lblNome.setFont(new Font("Roboto Black", Font.PLAIN, 18));
-        contentPane.add(lblNome);
+        JLabel lblCheck_IN = new JLabel("CHECK-IN");
+        lblCheck_IN.setBounds(50, 200, 255, 14);
+        lblCheck_IN.setForeground(SystemColor.textInactiveText);
+        lblCheck_IN.setFont(new Font("Roboto Black", Font.PLAIN, 18));
+        contentPane.add(lblCheck_IN);
 
-        txtNacionalidade = new JComboBox<>();
-        txtNacionalidade.setBounds(560, 350, 289, 36);
-        txtNacionalidade.setBackground(SystemColor.text);
-        txtNacionalidade.setFont(new Font("Roboto", Font.PLAIN, 16));
-        txtNacionalidade.setModel(new DefaultComboBoxModel<>(new String[] {"alemão", "andorrano", "angolano", "antiguano", "saudita", "argelino", "argentino", "armênio", "australiano", "austríaco", "azerbaijano", "bahamense", "bangladês, bangladense", "barbadiano", "bahreinita", "belga", "belizenho", "beninês", "belarusso", "boliviano", "bósnio", "botsuanês", "brasileiro", "bruneíno", "búlgaro", "burkineonse, burkinabé", "burundês", "butanês", "cabo-verdiano", "camerounês", "cambojano", "catariano", "canadense", "cazaque", "chadiano", "chileno", "chinês", "cipriota", "colombiano", "comoriano", "congolês", "congolês", "sul-coreano", "norte-coreano", "costa-marfinense, marfinense", "costa-ricense", "croata", "cubano", "dinamarquês", "djiboutiano", "dominiquense", "egípcio", "salvadorenho", "emiradense, emirático", "equatoriano", "eritreu", "eslovaco", "esloveno", "espanhol", "estadunidense, (norte-)americano", "estoniano", "etíope", "fijiano", "filipino", "finlandês", "francês", "gabonês", "gambiano", "ganês ou ganense", "georgiano", "granadino", "grego", "guatemalteco", "guianês", "guineense", "guineense, bissau-guineense", "equato-guineense", "haitiano", "hondurenho", "húngaro", "iemenita", "cookiano", "marshallês", "salomonense", "indiano", "indonésio", "iraniano", "iraquiano", "irlandês", "islandês", "34", "jamaicano", "japonês", "jordaniano", "kiribatiano", "kuwaitiano", "laosiano", "lesotiano", "letão", "libanês", "liberiano", "líbio", "liechtensteiniano", "lituano", "luxemburguês", "macedônio", "madagascarense", "malásio37", "malawiano", "maldivo", "maliano", "maltês", "marroquino", "mauriciano", "mauritano", "mexicano", "myanmarense", "micronésio", "moçambicano", "moldovo", "monegasco", "mongol", "montenegrino", "namibiano", "nauruano", "nepalês", "nicaraguense", "nigerino", "nigeriano", "niuiano", "norueguês", "neozelandês", "omani", "neerlandês", "palauano", "palestino", "panamenho", "papua, papuásio", "paquistanês", "paraguaio", "peruano", "polonês, polaco", "português", "queniano", "quirguiz", "britânico", "centro-africano", "tcheco", "dominicano", "romeno", "ruandês", "russo", "samoano", "santa-lucense", "são-cristovense", "samarinês", "santomense", "são-vicentino", "seichelense", "senegalês", "sérvio", "singapurense", "sírio", "somaliano, somali", "sri-lankês", "suázi", "sudanês", "sul-sudanês", "sueco", "suíço", "surinamês", "tajique", "tailandês", "tanzaniano", "timorense", "togolês", "tonganês", "trinitário", "tunisiano", "turcomeno", "turco", "tuvaluano", "ucraniano", "ugandês", "uruguaio", "uzbeque", "vanuatuense", "vaticano", "venezuelano", "vietnamita", "zambiano", "zimbabueano"}));
-        contentPane.add(txtNacionalidade);
+        txtCheck_IN = new JDateChooser();
+        txtCheck_IN.setBounds(50, 220, 253, 25);
+        contentPane.add(txtCheck_IN);
 
-        txtNome = new JTextField();
-        txtNome.setBounds(560, 143, 253, 25);
-        contentPane.add(txtNome);
+        JLabel lblCheck_out = new JLabel("CHECK-OUT");
+        lblCheck_out.setBounds(50, 260, 255, 14);
+        lblCheck_out.setForeground(SystemColor.textInactiveText);
+        lblCheck_out.setFont(new Font("Roboto Black", Font.PLAIN, 18));
+        contentPane.add(lblCheck_out);
 
-        JLabel lblSobrenome = new JLabel("SOBRENOME");
-        lblSobrenome.setBounds(560, 189, 255, 14);
-        lblSobrenome.setForeground(SystemColor.textInactiveText);
-        lblSobrenome.setFont(new Font("Roboto Black", Font.PLAIN, 18));
-        contentPane.add(lblSobrenome);
+        txtCheck_out = new JDateChooser();
+        txtCheck_out.setBounds(50, 280, 253, 25);
+        contentPane.add(txtCheck_out);
 
-        txtSobrenome = new JTextField();
-        txtSobrenome.setBounds(560, 213, 253, 25);
-        contentPane.add(txtSobrenome);
+        JLabel lblValor = new JLabel("VALOR DA RESERVA");
+        lblValor.setForeground(SystemColor.textInactiveText);
+        lblValor.setBounds(50, 320, 196, 14);
+        lblValor.setFont(new Font("Roboto Black", Font.PLAIN, 18));
+        contentPane.add(lblValor);
 
-        JLabel lblDataN = new JLabel("DATA DE NASCIMENTO");
-        lblDataN.setBounds(560, 256, 255, 14);
-        lblDataN.setForeground(SystemColor.textInactiveText);
-        lblDataN.setFont(new Font("Roboto Black", Font.PLAIN, 18));
-        contentPane.add(lblDataN);
+        txtValor = new JTextField();
+        txtValor.setBounds(50, 340, 250, 27);
+        contentPane.add(txtValor);
 
-        txtDataN = new JDateChooser();
-        txtDataN.setBounds(560, 280, 253, 25);
-        contentPane.add(txtDataN);
+        JLabel lblPgto = new JLabel("VALOR DA RESERVA");
+        lblPgto.setForeground(SystemColor.textInactiveText);
+        lblPgto.setBounds(50, 370, 289, 38);
+        lblPgto.setFont(new Font("Roboto Black", Font.PLAIN, 18));
+        contentPane.add(lblPgto);
 
-        JLabel lblNacionalidade = new JLabel("NACIONALIDADE");
-        lblNacionalidade.setBounds(560, 326, 255, 14);
-        lblNacionalidade.setForeground(SystemColor.textInactiveText);
-        lblNacionalidade.setFont(new Font("Roboto Black", Font.PLAIN, 18));
-        contentPane.add(lblNacionalidade);
-
-        txtNacionalidade = new JComboBox<>();
-        txtNacionalidade.setBounds(560, 350, 253, 25);
-        contentPane.add(txtNacionalidade);
-
-        JLabel lblTelefone = new JLabel("TELEFONE");
-        lblTelefone.setBounds(560, 406, 253, 14);
-        lblTelefone.setForeground(SystemColor.textInactiveText);
-        lblTelefone.setFont(new Font("Roboto Black", Font.PLAIN, 18));
-        contentPane.add(lblTelefone);
-
-        txtTelefone = new JTextField();
-        txtTelefone.setBounds(560, 430, 253, 25);
-        contentPane.add(txtTelefone);
-
-        JLabel lblNumeroReserva = new JLabel("NÚMERO DE RESERVA");
-        lblNumeroReserva.setBounds(560, 476, 253, 14);
-        lblNumeroReserva.setForeground(SystemColor.textInactiveText);
-        lblNumeroReserva.setFont(new Font("Roboto Black", Font.PLAIN, 18));
-        contentPane.add(lblNumeroReserva);
-
-        txtNreserva = new JTextField();
-        txtNreserva.setBounds(560, 500, 253, 25);
-        contentPane.add(txtNreserva);
-
-
-        // Add all the labels and text fields to the contentPane
-        contentPane.add(lblNome);
-        contentPane.add(txtNome);
-        contentPane.add(lblSobrenome);
-        contentPane.add(txtSobrenome);
-        contentPane.add(lblDataN);
-        contentPane.add(txtDataN);
-        contentPane.add(lblNacionalidade);
-        contentPane.add(txtNacionalidade);
-        contentPane.add(lblTelefone);
-        contentPane.add(txtTelefone);
-        contentPane.add(lblNumeroReserva);
-        contentPane.add(txtNreserva);
+        txtFormaPagamento = new JComboBox<>();
+        txtFormaPagamento.setBounds(50, 400, 250, 32);
+        txtFormaPagamento.setBackground(SystemColor.text);
+        txtFormaPagamento.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
+        txtFormaPagamento.setFont(new Font("Roboto", Font.PLAIN, 16));
+        txtFormaPagamento.setModel(new DefaultComboBoxModel<>(new String[]{"Cartão de Crédito", "Cartão de Débito", "Dinheiro"}));
+        contentPane.add(txtFormaPagamento);
     }
+
 
     private void createButtons() {
-        JButton btnSave = new JButton("Salvar");
-        btnSave.setBounds(560, 550, 100, 35);
+        JButton btnSave = new JButton("Continuar");
+        btnSave.setBounds(170, 450, 130, 36);
         btnSave.setFont(new Font("Roboto", Font.PLAIN, 16));
         btnSave.setBackground(Color.WHITE);
-        btnSave.addActionListener(e -> handleButtonCommand("Save"));  // Corrected line
         contentPane.add(btnSave);
+        ImageIcon icon = new ImageIcon("src/imagenes/save.png");
+        btnSave.setIcon(icon);
 
-        JButton btnExit = createIconButton("Exit", "X", 871, 0);
-        btnExit.addMouseListener(new MouseAdapter() {
+        btnSave.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                System.exit(0);
+            public void actionPerformed(ActionEvent e) {
+                if (areAllFieldsFilled()) {
+                    saveToDatabase();
+                    RegistroHospede usuario = new RegistroHospede();
+                    usuario.setVisible(true);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(Registro.this, "Preencha todos os campos antes de continuar.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
-        contentPane.add(btnExit);
     }
 
-    private JButton createIconButton(String command, String text, int x, int y) {
-        JButton button = new JButton(text);
-        button.setBounds(x, y, 39, 35);
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        button.setBackground(new Color(12, 138, 199));
-        button.setForeground(Color.WHITE);
-        button.setFont(new Font("Roboto", Font.PLAIN, 18));
-        if (command.equals("Save")) {
-            button.addActionListener(e -> saveButtonClicked());
-        } else {
-            button.addActionListener(e -> handleButtonCommand(command));
-        }
-
-        return button;
-    }
     private boolean areAllFieldsFilled() {
-        return !txtNome.getText().isEmpty() &&
-                !txtSobrenome.getText().isEmpty() &&
-                txtDataN.getDate() != null &&
-                !txtTelefone.getText().isEmpty();
-    }
-    private void handleButtonCommand(String command) {
-        if (command.equals("Exit")) {
-            System.exit(0);
-        } else if (command.equals("Save")) {
-            if (areAllFieldsFilled()) {
-                int result = JOptionPane.showConfirmDialog(
-                        contentPane,
-                        "Deseja realmente salvar o registro?",
-                        "Confirmar",
-                        JOptionPane.YES_NO_OPTION
-                );
-                if (result == JOptionPane.YES_OPTION) {
-                    saveToDatabase();
-                    JOptionPane.showMessageDialog(
-                            contentPane,
-                            "Registro salvo com sucesso!",
-                            "Sucesso",
-                            JOptionPane.INFORMATION_MESSAGE
-                    );
-                    dispose();
-                }
-            } else {
-                JOptionPane.showMessageDialog(
-                        contentPane,
-                        "Preencha todos os campos antes de salvar.",
-                        "Erro",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
-        }
-    }
-
-    private void saveButtonClicked() {
-        handleButtonCommand("Save");
+        return txtCheck_IN.getDate() != null &&
+                txtCheck_out.getDate() != null &&
+                !txtValor.getText().isEmpty() &&
+                txtFormaPagamento.getSelectedItem() != null;
     }
 
     private void saveToDatabase() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/db_one";
-            String username = "root";
-            String password = "root"; //
-            Connection connection = DriverManager.getConnection(url, username, password);
-            String sql = "INSERT INTO db_one.hospedes (NOME, SOBRENOME, DATA_NASCIMENTO, NACIONALIDADE, TELEFONE, ID_RESERVA) VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, txtNome.getText());
-            preparedStatement.setString(2, txtSobrenome.getText());
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_one", "root", "Cross-fire1")) {
+            String sql = "INSERT INTO reservas (DATA_ENTRADA, DATA_SAIDA, VALOR, FORMA_PAGAMENTO) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                // Get values from JDateChooser and JTextField components
+                java.sql.Date checkInDate = new java.sql.Date(txtCheck_IN.getDate().getTime());
+                java.sql.Date checkOutDate = new java.sql.Date(txtCheck_out.getDate().getTime());
+                double valor = Double.parseDouble(txtValor.getText());
+                String formaPagamento = txtFormaPagamento.getSelectedItem().toString();
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String formattedDate = dateFormat.format(txtDataN.getDate());
-            preparedStatement.setString(3, formattedDate);
+                preparedStatement.setDate(1, checkInDate);
+                preparedStatement.setDate(2, checkOutDate);
+                preparedStatement.setDouble(3, valor);
+                preparedStatement.setString(4, formaPagamento);
 
-            preparedStatement.setString(4, txtNacionalidade.getSelectedItem().toString());
-            preparedStatement.setString(5, txtTelefone.getText());
-            preparedStatement.setInt(6, Integer.parseInt(txtNreserva.getText()));
+                int rowsAffected = preparedStatement.executeUpdate();
 
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-            connection.close();
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger logger = Logger.getLogger(getClass().getName());
-            logger.log(Level.SEVERE, "An error occurred", ex);
+                if (rowsAffected > 0) {
+                    JOptionPane.showMessageDialog(this, "Reserva salva com sucesso.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Falha ao salvar reserva.");
+                }
+            }
+        } catch (SQLException | NumberFormatException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-        public static void main(String[] args) {
+
+
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Registro frame = new Registro();
             frame.setVisible(true);

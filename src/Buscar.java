@@ -146,7 +146,7 @@ public class Buscar extends JFrame {
     private void fetchDataFromDatabaseForHospedes() {
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";
-        String password = "root";
+        String password = "Cross-fire1";
 
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
@@ -178,7 +178,7 @@ public class Buscar extends JFrame {
     private void fetchDataFromDatabaseForReservas() {
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";
-        String password = "Root";
+        String password = "Cross-fire1";
 
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
