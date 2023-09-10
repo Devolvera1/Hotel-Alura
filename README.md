@@ -60,7 +60,6 @@ Este projeto está em desenvolvimento.
 ![image](https://github.com/Devolvera1/Hotel-Alura/assets/61688578/c1da98cb-d128-419c-9082-f63af6a29a50)
 ![image](https://github.com/Devolvera1/Hotel-Alura/assets/61688578/0f26eb4a-8e39-4c71-9d4e-dffcd9a48940)
 ![image](https://github.com/Devolvera1/Hotel-Alura/assets/61688578/75add424-95be-41cf-b001-f518c8270895)
-![image](https://github.com/Devolvera1/Hotel-Alura/assets/61688578/199e399a-e512-4b09-ae61-efeadfa48e73)
 ![image](https://github.com/Devolvera1/Hotel-Alura/assets/61688578/73071807-0600-4783-93f9-e6d95818bde1)
 ![image](https://github.com/Devolvera1/Hotel-Alura/assets/61688578/5adc033b-d711-4b6b-9a35-cfe45bdcc2b0)
 
