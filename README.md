@@ -54,7 +54,6 @@ Este projeto está em desenvolvimento.
 
 ## Capturas de Tela
 
-![image](https://github.com/Devolvera1/Hotel-Alura/assets/61688578/e7d6e89f-02f4-42d2-88bb-35868f7c622d)
 ![image](https://github.com/Devolvera1/Hotel-Alura/assets/61688578/b3c77237-f398-4250-a4b8-3bdd26d2eb8b)
 ![image](https://github.com/Devolvera1/Hotel-Alura/assets/61688578/af965296-869e-4e91-bcb1-8800003bcac2)
 ![image](https://github.com/Devolvera1/Hotel-Alura/assets/61688578/738eb1b0-5faf-435a-bc53-6a965669543c)
