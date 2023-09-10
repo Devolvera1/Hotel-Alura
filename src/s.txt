@@ -1,0 +1,14 @@
+reservas
+id interligado com id reserva na tbhospedes
+dataentrada
+datasaida
+valor
+formapagamento
+
+hospedes
+id
+nome
+sobrenome
+datanacimento
+telefone
+idreserva (interligado com o id da tbreservas)

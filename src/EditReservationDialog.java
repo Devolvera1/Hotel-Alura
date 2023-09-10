@@ -75,7 +75,7 @@ public class EditReservationDialog extends JDialog {
 
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";
-        String password = "Cross-fire1";
+        String password = "root";
 
         String updateQuery = "UPDATE db_one.reservas " +
                 "SET data_check_in = ?, data_check_out = ?, valor = ?, forma_pgto = ? " +
@@ -182,7 +182,7 @@ class DeleteButton extends JPanel {
         String numeroReserva = getModelValue(row, 0); // Assuming the first column contains the reservation number
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";
-        String password = "Cross-fire1";
+        String password = "root";
 
         String deleteQuery = "DELETE FROM db_one.reservas WHERE numero_reserva = ?";
 

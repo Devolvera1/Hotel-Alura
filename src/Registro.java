@@ -192,8 +192,13 @@ public class Registro extends JFrame {
                 );
                 if (result == JOptionPane.YES_OPTION) {
                     saveToDatabase();
-                    // Show success message and navigate back to PaginaPrincipal.java
-                    // ...
+                    JOptionPane.showMessageDialog(
+                            contentPane,
+                            "Registro salvo com sucesso!",
+                            "Sucesso",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                    dispose();
                 }
             } else {
                 JOptionPane.showMessageDialog(
@@ -215,9 +220,9 @@ public class Registro extends JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/db_one";
             String username = "root";
-            String password = "Cross-fire1";
+            String password = "root"; //
             Connection connection = DriverManager.getConnection(url, username, password);
-            String sql = "INSERT INTO hospedes (nome, sobrenome, data_nascimento, nacionalidade, telefone, numero_reserva) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO db_one.hospedes (NOME, SOBRENOME, DATA_NASCIMENTO, NACIONALIDADE, TELEFONE, ID_RESERVA) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, txtNome.getText());
             preparedStatement.setString(2, txtSobrenome.getText());
@@ -231,8 +236,6 @@ public class Registro extends JFrame {
             preparedStatement.setInt(6, Integer.parseInt(txtNreserva.getText()));
 
             preparedStatement.executeUpdate();
-
-            // Close the resources
             preparedStatement.close();
             connection.close();
         } catch (ClassNotFoundException | SQLException ex) {

@@ -131,9 +131,9 @@ public class PaginaPrincipal extends JFrame {
         panelFecha.add(labelFecha);
         labelFecha.setForeground(Color.WHITE);
         labelFecha.setFont(new Font("Roboto", Font.PLAIN, 33));
-        Date fechaActual = new Date(); //data atual
-        String fecha = new SimpleDateFormat("dd/MM/yyyy").format(fechaActual); //formata a data numa string
-        labelFecha.setText("Hoje é " + fecha); //estabelece a data na label
+        Date fechaActual = new Date();
+        String fecha = new SimpleDateFormat("dd/MM/yyyy").format(fechaActual);
+        labelFecha.setText("Hoje é " + fecha);
 
         JLabel lbltitulo = new JLabel("Bem-vindo");
         lbltitulo.setFont(new Font("Roboto", Font.BOLD, 24));

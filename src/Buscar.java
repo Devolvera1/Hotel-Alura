@@ -13,7 +13,6 @@ public class Buscar extends JFrame {
     private EditButton editButton;
     private DeleteButton deleteButton;
 
-    private JTextField txtBuscar;
 
     public Buscar() {
         initializeUI();
@@ -61,7 +60,6 @@ public class Buscar extends JFrame {
         JScrollPane scroll_table = new JScrollPane(tbReservas);
         panel.addTab("Reservas", new ImageIcon(Buscar.class.getResource("/imagenes/reservado.png")), scroll_table);
 
-// Chame o método para preencher os dados da tabela de reservas
         fetchDataFromDatabaseForReservas();
 
         tbHospedes = new JTable();
@@ -148,7 +146,7 @@ public class Buscar extends JFrame {
     private void fetchDataFromDatabaseForHospedes() {
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";
-        String password = "Cross-fire1";
+        String password = "root";
 
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
@@ -160,7 +158,7 @@ public class Buscar extends JFrame {
             modeloHospedes.setRowCount(0);
 
             while (resultSet.next()) {
-                Object[] rowData = new Object[7];  // Adjust the number of columns as needed
+                Object[] rowData = new Object[7];
                 for (int i = 1; i <= 7; i++) {
                     rowData[i - 1] = resultSet.getObject(i);
                 }
@@ -175,10 +173,12 @@ public class Buscar extends JFrame {
         }
     }
 
+
+
     private void fetchDataFromDatabaseForReservas() {
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";
-        String password = "Cross-fire1";
+        String password = "Root";
 
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
