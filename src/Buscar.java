@@ -88,6 +88,7 @@ public class Buscar extends JFrame {
         deleteButton.setBounds(668, 497, 122, 35);
         contentPane.add(deleteButton);
 
+
         // Button exit(X) and Back(<).
         JLabel lblExcluir = new JLabel("DELETAR");
         lblExcluir.setHorizontalAlignment(SwingConstants.CENTER);
@@ -146,7 +147,7 @@ public class Buscar extends JFrame {
     private void fetchDataFromDatabaseForHospedes() {
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";
-        String password = "Cross-fire1";
+        String password = "root";
 
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
@@ -178,7 +179,7 @@ public class Buscar extends JFrame {
     private void fetchDataFromDatabaseForReservas() {
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";
-        String password = "Cross-fire1";
+        String password = "root";
 
         try {
             Connection connection = DriverManager.getConnection(url, username, password);

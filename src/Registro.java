@@ -191,7 +191,7 @@ public class Registro extends JFrame {
     }
 
     private void saveToDatabase() {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_one", "root", "Cross-fire1")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_one", "root", "root")) {
             String sql = "INSERT INTO reservas (DATA_ENTRADA, DATA_SAIDA, VALOR, FORMA_PAGAMENTO) VALUES (?, ?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 // Get values from JDateChooser and JTextField components

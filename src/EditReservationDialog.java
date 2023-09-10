@@ -75,7 +75,7 @@ public class EditReservationDialog extends JDialog {
 
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";
-        String password = "Cross-fire1";
+        String password = "root";
 
         String updateQuery = "UPDATE db_one.reservas " +
                 "SET DATA_ENTRADA = ?, DATA_SAIDA = ?, valor = ?, FORMA_PAGAMENTO = ? " +
@@ -93,15 +93,15 @@ public class EditReservationDialog extends JDialog {
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(this, "Changes saved successfully.");
+                JOptionPane.showMessageDialog(null, "Changes saved successfully.");
                 dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Failed to save changes.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Failed to save changes.", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "An error occurred while saving changes.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "An error occurred while saving changes.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
@@ -135,7 +135,7 @@ class EditButton extends JPanel {
             EditReservationDialog editDialog = new EditReservationDialog(rowData);
             editDialog.setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "Select a record to edit.");
+            JOptionPane.showMessageDialog(null, "Select a record to edit.");
         }
     }
 
@@ -143,6 +143,7 @@ class EditButton extends JPanel {
         return model.getValueAt(row, col).toString();
     }
 }
+
 
 class DeleteButton extends JPanel {
     private JTable table;
@@ -166,13 +167,48 @@ class DeleteButton extends JPanel {
         if (selectedRow >= 0) {
             int confirmDelete = JOptionPane.showConfirmDialog(null, "Você tem certeza que deseja deletar?", "Confirmação", JOptionPane.YES_NO_OPTION);
             if (confirmDelete == JOptionPane.YES_OPTION) {
+                // Primeiro, obtenha o ID_RESERVA do registro que você está prestes a excluir
+                String numeroReserva = getModelValue(selectedRow, 0);
+
+                // Em seguida, atualize os registros relacionados na tabela hospedes (ou em outra tabela) para remover a referência
+                updateRelatedRecords(numeroReserva);
+
+                // Agora você pode prosseguir com a exclusão
                 deleteRecord(selectedRow);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecione uma linha para deletas");
+            JOptionPane.showMessageDialog(null, "Selecione uma linha para deletar");
         }
-
     }
+
+    private void updateRelatedRecords(String numeroReserva) {
+        String url = "jdbc:mysql://localhost:3306/db_one";
+        String username = "root";
+        String password = "root";
+
+        String updateQuery = "UPDATE db_one.hospedes SET ID_RESERVA = NULL WHERE ID_RESERVA = ?";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            preparedStatement.setString(1, numeroReserva);
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Registros relacionados atualizados com sucesso.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Não foram encontrados registros relacionados para atualizar.");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar registros relacionados.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+
+
 
     private String getModelValue(int row, int col) {
         return model.getValueAt(row, col).toString();
@@ -182,7 +218,7 @@ class DeleteButton extends JPanel {
         String numeroReserva = getModelValue(row, 0);
         String url = "jdbc:mysql://localhost:3306/db_one";
         String username = "root";
-        String password = "Cross-fire1";
+        String password = "root";
 
         String deleteQuery = "DELETE FROM db_one.reservas WHERE ID = ?";
 
@@ -193,15 +229,15 @@ class DeleteButton extends JPanel {
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(this, "Record deleted successfully.");
+                JOptionPane.showMessageDialog(null, "Record deleted successfully.");
                 model.removeRow(row);
             } else {
-                JOptionPane.showMessageDialog(this, "Failed to delete record.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Failed to delete record.", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "An error occurred while deleting record.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "An error occurred while deleting record.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

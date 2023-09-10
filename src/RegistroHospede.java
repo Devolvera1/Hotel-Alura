@@ -260,21 +260,33 @@ public class RegistroHospede extends JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/db_one";
             String username = "root";
-            String password = "Cross-fire1";
+            String password = "root";
             Connection connection = DriverManager.getConnection(url, username, password);
-            String sql = "INSERT INTO hospedes (NOME, SOBRENOME, DATA_NASCIMENTO, NACIONALIDADE, TELEFONE) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, txtNome.getText());
-            preparedStatement.setString(2, txtSobrenome.getText());
+
+            // Recupere o maior valor de ID da tabela RESERVAS
+            String sqlMaxIdReserva = "SELECT MAX(ID) AS ID FROM RESERVAS";
+            Statement maxIdReservaStatement = connection.createStatement();
+            ResultSet resultSet = maxIdReservaStatement.executeQuery(sqlMaxIdReserva);
+
+            int ID_RESERVA = -1;
+            if (resultSet.next()) {
+                ID_RESERVA = resultSet.getInt("ID");
+            }
+
+            String sqlInsercao = "INSERT INTO hospedes (NOME, SOBRENOME, DATA_NASCIMENTO, NACIONALIDADE, TELEFONE, ID_RESERVA) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement insercaoStatement = connection.prepareStatement(sqlInsercao);
+            insercaoStatement.setString(1, txtNome.getText());
+            insercaoStatement.setString(2, txtSobrenome.getText());
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String formattedDate = dateFormat.format(txtDataN.getDate());
-            preparedStatement.setString(3, formattedDate);
-            preparedStatement.setString(4, txtNacionalidade.getText());
-            preparedStatement.setString(5, txtTelefone.getText());
+            insercaoStatement.setString(3, formattedDate);
+            insercaoStatement.setString(4, txtNacionalidade.getText());
+            insercaoStatement.setString(5, txtTelefone.getText());
+            insercaoStatement.setInt(6, ID_RESERVA);
 
+            // Execute a instrução de inserção
+            insercaoStatement.executeUpdate();
 
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
             connection.close();
         } catch (ClassNotFoundException | SQLException ex) {
             Logger logger = Logger.getLogger(getClass().getName());
